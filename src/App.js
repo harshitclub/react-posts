@@ -1,16 +1,47 @@
 import './App.css';
-import Blog from './Components/Blog/Blog';
+// import Blog from './Components/Blog/Blog';
+import React, { useState, useEffect } from 'react';
+import Posts from './Components/Posts/Posts';
+import Pagination from './Components/Pagination/Pagination';
+import axios from 'axios';
 
-function App() {
+const App = () => {
+  // initialize all the usestate for our application
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+// creating useeffect for fetching the data from api with axios
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
+      setPosts(res.data);
+      setLoading(false);
+    };
+
+    fetchPosts();
+  }, []);
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
   return (
-    <>
-    <Blog/>
-    </>
+    <div>
+      <Posts posts={currentPosts} loading={loading} />
+      <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={posts.length}
+        paginate={paginate}
+      />
+    </div>
   );
-}
-
-// first I create the blog page in which I show all the json posts and create blog page css styling in app.css file.
-// then I create pagination functionality by creating separate component for the pagination and add the css styling for pagination in app.css file
-// then I create the search component that searches the posts and create its seperate component and its css styling is in app.css file
+};
 
 export default App;
