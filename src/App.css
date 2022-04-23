@@ -100,3 +100,25 @@ input[type="text"] {
         font-family:'Poppins', sans-serif;
         outline: none;
 }
+
+@media only screen and (max-width: 600px) {
+    .content {
+        margin: 20px 15px;
+        padding: 20px 20px;
+    }
+
+    .pagination{
+        display: flex;
+        box-shadow: none;
+    }
+
+    .page-item{
+        padding: 6px;
+        margin: 5px;
+        font-size: 20px;
+    }
+
+    input[type="text"]{
+        width: 350px;
+    }
+  }
